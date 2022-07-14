@@ -4,7 +4,7 @@ require('dotenv').config;
 const newsBot = new NewsBot(env.TOKEN);
 
 exports.handler = async (event) => {
-  newsBot.sendPhotoWithText(
+  newsBot.sendNew(
       process.env.CHAT_ID,
       event.link,
       event.title,
