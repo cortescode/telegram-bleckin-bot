@@ -8,16 +8,11 @@ exports.handler = async (event) => {
       process.env.CHAT_ID,
       event.link,
       event.title,
-      event.description);
-
-
-  // TODO implement
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify('Hello from Lambda!'),
-    title: event.title,
-    description: event.description,
-    link: event.link,
-  };
-  return response;
+      event.description)
+      .then((res) => {
+        return res;
+      })
+      .catch((res) => {
+        return res;
+      });
 };
