@@ -9,12 +9,15 @@ describe('proof NewsBot correct behaviour', () => {
   beforeAll(() => {
     newsBot = new NewsBot(env.TOKEN);
   });
-  test('Proof if the News is Sent Correctly', () => {
-    response = newsBot.sendNew(
+  it('Proof if the News is Sent Correctly', () => {
+    let response;
+    newsBot.sendNew(
         process.env.BLECKIN_CHANNEL_ID,
         'https://es.cointelegraph.com/news/seven-cybersecurity-tips-to-keep-us-protected',
         'Este es el título',
-        'Esta es la descripción');
-    console.log(response);
+        'Esta es la descripción').then((res) => {
+      response = res;
+      expect(response.ok).toBe(true);
+    });
   });
 });

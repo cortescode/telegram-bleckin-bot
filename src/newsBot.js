@@ -37,24 +37,28 @@ ${description}
 [Clicka aquí para ver la noticia completa](${url})
 `;
 
-    request(url, {method: 'GET'}, (error, response, body)=> {
-      const parsedBody = htmlParser.parse(body);
-      let img;
-      let srcImg;
+    return new Promise((resolve, reject) => {
+      request(url, {method: 'GET'}, (error, response, body)=> {
+        const parsedBody = htmlParser.parse(body);
+        let img;
+        let srcImg;
 
-      if (url.search('criptonoticias') != -1) {
-        img = parsedBody.querySelector('picture')
-            .querySelector('img');
-        srcImg = img.getAttribute('data-lazy-src');
-      } else if (url.search('cointelegraph') != -1) {
-        img = parsedBody.querySelector('.post-cover picture')
-            .querySelector('img');
-        srcImg = img.getAttribute('data-cfsrc');
-      } else {
-        this.sendError('Url not recognized');
-      }
+        if (url.search('criptonoticias') != -1) {
+          img = parsedBody.querySelector('picture')
+              .querySelector('img');
+          srcImg = img.getAttribute('data-lazy-src');
+        } else if (url.search('cointelegraph') != -1) {
+          img = parsedBody.querySelector('.post-cover picture')
+              .querySelector('img');
+          srcImg = img.getAttribute('data-cfsrc');
+        } else {
+          this.sendError('Url not recognized');
+        }
 
-      return this.sendPhoto(chatId, srcImg, message);
+        this.sendPhoto(chatId, srcImg, message)
+            .then((res) => resolve(res))
+            .catch((res) => reject(res));
+      });
     });
   };
 }

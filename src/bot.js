@@ -41,7 +41,7 @@ ${errorMessage}`;
   * @param {string} message To send with the image
   * @return {request}
   */
-  async sendPhoto(chatId, imgUrl, message) {
+  sendPhoto(chatId, imgUrl, message) {
     const form = {
       'chat_id': chatId,
       'photo': imgUrl,
@@ -49,7 +49,11 @@ ${errorMessage}`;
       'parse_mode': 'Markdown',
       'allow_sending_without_reply': true,
     };
-    return await this.requestApi('sendPhoto', form);
+
+    return new Promise((resolve, reject) => {
+      this.requestApi('sendPhoto', form)
+          .then((res) => resolve(res)).catch((res) => reject(res));
+    });
   }
 
   /**
@@ -60,7 +64,6 @@ ${errorMessage}`;
   */
   requestApi(action, form) {
     const url = this.api+this.token+'/'+action;
-    console.log('url: ' + url);
 
     const options = {
       method: 'POST',
