@@ -27,17 +27,17 @@ class NewsBot extends Bot {
    * @param {string} description The New Description
    * @return {ReturnType} The result of the request
   */
-  sendNew(chatId, url, title, description) {
+  async sendNew(chatId, url, title, description) {
     const message =
 `
 *${title}*
  
 ${description}
  
-[Clicka aquí para ver la noticia completa](https://www.criptonoticias.com/wp-content/uploads/2022/07/venezuela-3er-pais-mayor-porcentaje-usuarios-bitcoin-1140x570.jpg)
+[Clicka aquí para ver la noticia completa](${url})
 `;
 
-    return request(url, {method: 'GET'}, (error, response, body)=> {
+    request(url, {method: 'GET'}, (error, response, body)=> {
       const parsedBody = htmlParser.parse(body);
       let img;
       let srcImg;
@@ -51,10 +51,10 @@ ${description}
             .querySelector('img');
         srcImg = img.getAttribute('data-cfsrc');
       } else {
-        console.error('Url not recognized');
+        this.sendError('Url not recognized');
       }
 
-      this.sendPhoto(chatId, srcImg, message);
+      return this.sendPhoto(chatId, srcImg, message);
     });
   };
 }
@@ -67,11 +67,14 @@ bot.sendNew(
     'Este es el título',
     'Esta es la descripción');
 
-bot.sendNew(
+console.log('aqui va lo que devuelve el request');
+res = bot.sendNew(
     process.env.BLECKIN_CHANNEL_ID,
     'https://es.cointelegraph.com/news/seven-cybersecurity-tips-to-keep-us-protected',
     'Este es el título',
-    'Esta es la descripción');
+    'Esta es la descripción').callback;
+
+console.log(res);
 
 
 module.exports = NewsBot;

@@ -1,7 +1,7 @@
-const {newsBot} = require('./newsBot');
+const NewsBot = require('./newsBot');
 require('dotenv').config;
 
-const Newsbot = new NewsBot(env.TOKEN);
+const newsBot = new NewsBot(env.TOKEN);
 
 exports.handler = async (event) => {
   newsBot.sendPhotoWithText(

@@ -39,8 +39,9 @@ ${errorMessage}`;
   * @param {int} chatId Where the message will be sent
   * @param {string} imgUrl To be sent
   * @param {string} message To send with the image
+  * @return {request}
   */
-  sendPhoto(chatId, imgUrl, message) {
+  async sendPhoto(chatId, imgUrl, message) {
     const form = {
       'chat_id': chatId,
       'photo': imgUrl,
@@ -48,13 +49,14 @@ ${errorMessage}`;
       'parse_mode': 'Markdown',
       'allow_sending_without_reply': true,
     };
-    this.requestApi('sendPhoto', form);
+    return await this.requestApi('sendPhoto', form);
   }
 
   /**
   * Send a photo with or without message to a determined channel.
   * @param {string} action The action to be executed
   * @param {Json} form Needed data for the action and the request
+  * @return {Promise} Return a promise with the result
   */
   requestApi(action, form) {
     const url = this.api+this.token+'/'+action;
@@ -68,8 +70,16 @@ ${errorMessage}`;
         'content-type': 'application/json',
       },
     };
-    request(url, options, (error, response, body) => {
-      console.log(body);
+    return new Promise((resolve, reject) => {
+      request(url, options, (error, response, body) => {
+        if (error || body.ok == false) {
+          this.sendError(error.message);
+          this.sendError(body.description);
+          reject(body);
+        } else {
+          resolve(body);
+        }
+      });
     });
   }
 };
