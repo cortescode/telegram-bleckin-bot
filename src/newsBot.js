@@ -34,7 +34,6 @@ class NewsBot extends Bot {
 		if (description.includes('Leer más')) {
 			let _description = description.replace('Leer más', `[Leer más](${url})`);
 
-
 			message =`
 *${title}*
  
