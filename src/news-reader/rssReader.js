@@ -7,7 +7,7 @@ class RRSReader {
 
     constructor(feed_url, config) {
         this.feed_url = feed_url
-        this.config = config || new RRSConfig()
+        this.config = config || new RRSReaderConfig()
     }
 
 
@@ -16,10 +16,12 @@ class RRSReader {
             https.get(this.feed_url, (response) => {
                 let data = ""
 
+                // Obtains all data from response
                 response.on("data", (chunk) => {
                     data+= chunk
                 })
-    
+                
+                // Once all data is obtained
                 response.on("end", () => {
                     try {
                         const $ = cheerio.load(data, { xmlMode: true });
@@ -48,17 +50,12 @@ class RRSReader {
 }
 
 
-class RRSConfig {
+class RRSReaderConfig {
     constructor(item_tag, title_tag, description_tag, url_tag) {
         this.item_tag = item_tag || "item"
         this.title_tag = title_tag || "title"
         this.description_tag = description_tag || "description"
         this.url_tag = url_tag || "link"
-
-        console.log("Item tag: ", this.item_tag)
-        console.log("Title tag: ", this.title_tag)
-        console.log("Description tag: ", this.description_tag)
-        console.log("Url tag: ", this.url_tag)
     }
 }
 
@@ -84,4 +81,4 @@ class RRSItem {
 
 
 
-module.exports = { RRSReader, RRSConfig, RRSItem};
+module.exports = { RRSReader, RRSReaderConfig, RRSItem};
