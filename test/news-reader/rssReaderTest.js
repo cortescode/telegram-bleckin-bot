@@ -1,4 +1,4 @@
-const { RRSReader, RRSItem } = require("../../src/news-reader/rssReader")
+const { RRSReader, RRSItem } = require("../../src/newsManager/rssReader")
 const assert = require("assert")
 
 

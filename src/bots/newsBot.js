@@ -2,13 +2,13 @@ import { request } from 'request';
 const htmlParser = require('node-html-parser');
 require('dotenv').config;
 
-const Bot = require('./bot');
+const telegramBot = require('./telegramBot');
 
 
 /**
  * NewsBot wich extends from Bot
 */
-class NewsBot extends Bot {
+class NewsBot extends telegramBot {
 	/**
 	 * Init the bot
 	 * @param {string} token The token to define the bot

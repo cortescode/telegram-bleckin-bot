@@ -1,7 +1,7 @@
 const {describe, it} = require("./testing")
 const assert = require("assert")
-const { Luke } = require("../src/luke")
-const { New } = require("../src/news-reader/newsReader")
+const { Luke } = require("../src/aiAgents/luke")
+const { New } = require("../src/newsManager/newsReader")
 
 
 let test_news = [

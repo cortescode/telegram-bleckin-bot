@@ -29,13 +29,13 @@ class NewsReader {
 
 
                 // Extract the title
-                const title = $(this.config.title_identifier).text().trim();
+                const title = $(this.config.titleIdentifier).text().trim();
                 
                 // Extract the description or key points
-                const description = $(this.config.description_identifier).text().trim();
+                const description = $(this.config.descriptionIdentifier).text().trim();
                 
                 // Extract the text content
-                const textContent = $(this.config.content_identifier).text().trim();
+                const textContent = $(this.config.contentIdentifier).text().trim();
                 
                 // Resolve a new New object
                 resolve(new New(title, description, textContent));
@@ -48,10 +48,11 @@ class NewsReader {
 
 
 class New {
-    constructor(title, description, textContent) {
+    constructor(title, description, textContent, imageUrl) {
         this.title = title
         this.description = description
         this.textContent = textContent
+        this.imageUrl = imageUrl
     }
 
 
@@ -66,10 +67,11 @@ Content: ${this.textContent}
 
 
 class NewsReaderConfig {
-    constructor(title_identifier, description_identifier, content_identifier) {
-        this.title_identifier = title_identifier || "title",
-        this.description_identifier = description_identifier || "description",
-        this.content_identifier = content_identifier || "content"
+    constructor(titleIdentifier, descriptionIdentifier, contentIdentifier, imageIdentifier) {
+        this.titleIdentifier = titleIdentifier || ".title",
+        this.descriptionIdentifier = descriptionIdentifier || ".description",
+        this.contentIdentifier = contentIdentifier || ".content"
+        this.imageIdentifier = imageIdentifier || ".image"
     }
 }
 

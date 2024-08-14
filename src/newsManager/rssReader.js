@@ -13,9 +13,11 @@ class RRSReader {
 
     readFeed() {
         return new Promise((resolve, reject) => {
-            https.get(this.feed_url, (response) => {
+            https.get(this.feed_url, (response, error) => {
+                console.log("Because this is not even accesed")
                 let data = ""
 
+                console.log("Lets see the error: ", error)
                 // Obtains all data from response
                 response.on("data", (chunk) => {
                     data+= chunk
@@ -32,6 +34,8 @@ class RRSReader {
                                 $(item).find(this.config.url_tag).text()
                             )
                         )).get();
+
+                        console.log(items)
 
                         resolve(items);
                     } catch (error) {

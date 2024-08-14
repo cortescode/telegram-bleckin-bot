@@ -1,5 +1,5 @@
 const { describe, it } = require("../testing")
-const { NewsReader, NewsReaderConfig } = require("../../src/news-reader/newsReader")
+const { NewsReader, NewsReaderConfig } = require("../../src/newsManager/newsReader")
 const assert = require("assert")
 
 

@@ -14,7 +14,9 @@
         "@langchain/core": "^0.2.20",
         "cheerio": "^1.0.0-rc.12",
         "dotenv": "^16.0.1",
+        "express": "^4.19.2",
         "langchain": "^0.2.12",
+        "node-cron": "^3.0.3",
         "node-html-parser": "^5.3.3",
         "request": "^2.88.2"
     }

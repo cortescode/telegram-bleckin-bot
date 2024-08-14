@@ -5,7 +5,7 @@ require('dotenv').config();
 /**
 * 
 */
-class Bot {
+class TelegramBot {
 	/**
 	* Create Telegram Bot with basic configuration.
 	* @param {string} token The bot Token
@@ -46,7 +46,9 @@ ${errorMessage}`;
 			'allow_sending_without_reply': true,
 		};
 
-		return await this.requestApi('sendMessage', form);
+		const response = await this.requestApi('sendMessage', form);
+
+		return response;
 	}
 
 
@@ -66,7 +68,9 @@ ${errorMessage}`;
 			'allow_sending_without_reply': true,
 		};
 
-		return await this.requestApi('sendPhoto', form);
+		const response = await this.requestApi('sendPhoto', form);
+
+		return response
 	}
 
 
@@ -79,6 +83,7 @@ ${errorMessage}`;
 	requestApi(action, form) {
 		return new Promise((resolve, reject) => {
 			const url = this.api + this.token + '/' + action;
+			console.log("Url: ", url)
 
 			const options = {
 				method: 'POST',
@@ -90,18 +95,24 @@ ${errorMessage}`;
 			};
 
 			request(url, options, async (error, response, body) => {
-				if (error) {
+				console.log("At least it try")
+				console.log("Error: ", error)
+				//console.log("Response: ", response)
+				// console.log("Body: ", body)
+				if(!error)
+					resolve(body);
+				/* if (error) {
 					await this.sendError(error.message);
 				} else if (body.ok == false) {
 					await this.sendError(body.description);
 				} else {
 					resolve(body);
-				}
+				} */
 			});
 		});
 	}
 
 }
 
-module.exports = Bot;
+module.exports = TelegramBot;
 
