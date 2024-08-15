@@ -3,21 +3,22 @@ const cheerio = require("cheerio")
 
 
 
-class RRSReader {
+class RSSReader {
+
+    readItems = [];
 
     constructor(feed_url, config) {
         this.feed_url = feed_url
-        this.config = config || new RRSReaderConfig()
+        this.config = config || new RSSReaderConfig()
     }
 
 
     readFeed() {
         return new Promise((resolve, reject) => {
             https.get(this.feed_url, (response, error) => {
-                console.log("Because this is not even accesed")
+                
                 let data = ""
 
-                console.log("Lets see the error: ", error)
                 // Obtains all data from response
                 response.on("data", (chunk) => {
                     data+= chunk
@@ -27,15 +28,19 @@ class RRSReader {
                 response.on("end", () => {
                     try {
                         const $ = cheerio.load(data, { xmlMode: true });
-                        const items = $(this.config.item_tag).map((_, item) => (
-                            new RRSItem(
+                        let items = $(this.config.item_tag).map((_, item) => (
+                            new RSSItem(
                                 $(item).find(this.config.title_tag).text(),
                                 $(item).find(this.config.description_tag).text(),
                                 $(item).find(this.config.url_tag).text()
                             )
                         )).get();
 
-                        console.log(items)
+                        items = items.filter(item => {
+                            return !this.readItems.some(readItem => readItem.equals(item));
+                        })
+
+                        this.readItems = [...this.readItems, ...items]
 
                         resolve(items);
                     } catch (error) {
@@ -45,7 +50,7 @@ class RRSReader {
                 })
 
                 response.on("error", () => {
-                    reject("An unexpected error occourred")
+                    reject("An unexpected error occurred")
                 })
             })
         })
@@ -54,7 +59,7 @@ class RRSReader {
 }
 
 
-class RRSReaderConfig {
+class RSSReaderConfig {
     constructor(item_tag, title_tag, description_tag, url_tag) {
         this.item_tag = item_tag || "item"
         this.title_tag = title_tag || "title"
@@ -65,7 +70,7 @@ class RRSReaderConfig {
 
 
 
-class RRSItem {
+class RSSItem {
     constructor(title, description, url) {
         this.title = title
         this.description = description
@@ -81,8 +86,12 @@ class RRSItem {
         Url: ${this.url}\n
         `
     }
+
+    equals(rssItem) {
+        return this.title == rssItem.title
+    }
 }
 
 
 
-module.exports = { RRSReader, RRSReaderConfig, RRSItem};
+module.exports = { RSSReader, RSSReaderConfig, RSSItem};
